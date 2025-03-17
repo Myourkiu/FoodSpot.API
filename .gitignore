@@ -1,0 +1,74 @@
+# Compilação
+bin/
+obj/
+*.dll
+*.exe
+*.pdb
+*.app
+
+# Configurações do Visual Studio/JetBrains Rider
+.vs/
+.idea/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+*.csproj.user
+
+# Configuração do sistema de build
+*.cache
+*.log
+*.lck
+
+# Pacotes e dependências
+packages/
+node_modules/
+*.nupkg
+*.snupkg
+
+# Arquivos temporários e de lock
+*.lock.json
+project.lock.json
+project.assets.json
+
+# Logs, backups e dumps
+*.log
+*.bak
+*.swp
+*.swo
+*.tmp
+*.old
+
+# Configurações locais e segredos
+secrets.json
+appsettings.*.json
+
+# Docker
+**/[Dd]ockerfile
+**/[Dd]ocker-compose*
+
+# Publicação e deploy
+publish/
+out/
+artifacts/
+
+# Sistema operacional
+*.DS_Store
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# Configurações de IDEs diversas
+*.vscode/
+*.code-workspace
+*.idea/
+
+# Testes e cobertura de código
+TestResults/
+*.coverage
+*.coveragexml
+*.trx
+
+# Outros
+*.rej
+*.orig
