@@ -1,5 +1,7 @@
 using FoodSpot.API.AutoMapper;
 using FoodSpot.API.Configurations;
+using FoodSpot.Domain;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,6 +14,10 @@ builder.Services.AddSwaggerGen();
 
 // Add Automapper
 builder.Services.AddAutoMapper(typeof(Mappings));
+
+// EF Core Config
+builder.Services.AddDbContext<ApplicationDbContext>(options =>
+ options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 // Add dependence injections
 builder.Services.AddRepositoryConfig();
