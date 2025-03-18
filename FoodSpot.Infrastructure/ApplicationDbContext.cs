@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FoodSpot.Domain
+namespace FoodSpot.Infrastructure
 {
     public class ApplicationDbContext : DbContext
     {

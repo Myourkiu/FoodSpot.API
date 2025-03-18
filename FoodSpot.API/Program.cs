@@ -1,6 +1,6 @@
 using FoodSpot.API.AutoMapper;
 using FoodSpot.API.Configurations;
-using FoodSpot.Domain;
+using FoodSpot.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);

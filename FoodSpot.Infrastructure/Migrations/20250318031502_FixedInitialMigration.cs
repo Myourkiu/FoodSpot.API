@@ -2,10 +2,10 @@
 
 #nullable disable
 
-namespace FoodSpot.Domain.Migrations
+namespace FoodSpot.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialCreate : Migration
+    public partial class FixedInitialMigration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
