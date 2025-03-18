@@ -72,3 +72,5 @@ TestResults/
 # Outros
 *.rej
 *.orig
+/appsettings.json
+FoodSpot.API/appsettings.json
