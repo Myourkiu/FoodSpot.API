@@ -5,13 +5,15 @@ VisualStudioVersion = 17.10.34707.107
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FoodSpot.API", "FoodSpot.API\FoodSpot.API.csproj", "{04AB35DD-77CC-4A6D-A0FA-75F5BE8B58F5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FoodSpot.Infrastructure", "FoodSpot.Infrastructure\FoodSpot.Infrastructure.csproj", "{555138A4-2018-4F00-A2D2-DE9CAAE55BA5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FoodSpot.Infrastructure", "FoodSpot.Infrastructure\FoodSpot.Infrastructure.csproj", "{555138A4-2018-4F00-A2D2-DE9CAAE55BA5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FoodSpot.Domain", "FoodSpot.Domain\FoodSpot.Domain.csproj", "{8876B0C0-B613-4023-9F68-1FAC63E21A59}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FoodSpot.Domain", "FoodSpot.Domain\FoodSpot.Domain.csproj", "{8876B0C0-B613-4023-9F68-1FAC63E21A59}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FoodSpot.Services", "FoodSpot.Services\FoodSpot.Services.csproj", "{260B7521-CD43-49E0-8846-AADB73435BEF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FoodSpot.Services", "FoodSpot.Services\FoodSpot.Services.csproj", "{260B7521-CD43-49E0-8846-AADB73435BEF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FoodSpot.Tests", "FoodSpot.Tests\FoodSpot.Tests.csproj", "{43891335-C82B-4608-B198-6735BD076C7C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FoodSpot.Tests", "FoodSpot.Tests\FoodSpot.Tests.csproj", "{43891335-C82B-4608-B198-6735BD076C7C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FoodSpot.DTOs", "FoodSpot.DTOs\FoodSpot.DTOs.csproj", "{D0A86B7E-BBCD-466F-AD47-13F4B2F80C9D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +41,10 @@ Global
 		{43891335-C82B-4608-B198-6735BD076C7C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{43891335-C82B-4608-B198-6735BD076C7C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{43891335-C82B-4608-B198-6735BD076C7C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D0A86B7E-BBCD-466F-AD47-13F4B2F80C9D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D0A86B7E-BBCD-466F-AD47-13F4B2F80C9D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D0A86B7E-BBCD-466F-AD47-13F4B2F80C9D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D0A86B7E-BBCD-466F-AD47-13F4B2F80C9D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
