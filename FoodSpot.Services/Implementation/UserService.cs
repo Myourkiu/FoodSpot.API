@@ -52,6 +52,15 @@ namespace FoodSpot.Services.Implementation
             return _mapper.Map<CreateUserResponse>(mappedUser);
         }
 
+        public async Task<User> GetByEmail(string email)
+        {
+            User? selectedUser = await _userRepository.GetUserByEmail(email);
+            if (selectedUser == null)
+                throw new Exception("User not found");
+
+            return selectedUser;
+        }
+
         public async Task<UserLoginResponse> Login(UserLoginRequest request)
         {
             User? user = await _userRepository.GetUserByEmail(request.Email);
@@ -68,6 +77,7 @@ namespace FoodSpot.Services.Implementation
             return response;
 
         }
+
 
         #region Auxiliaries
         private async Task<bool> VerifyUserExistsByEmail (string email)

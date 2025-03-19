@@ -23,18 +23,12 @@ namespace FoodSpot.API.Controller
         //    return await _context.Users.ToListAsync();
         //}
 
-        //[HttpGet("{id}")]
-        //public async Task<ActionResult<User>> GetUser(Guid id)
-        //{
-        //    var user = await _context.Users.FindAsync(id);
+        [HttpGet("GetByEmail")]
+        public async Task<ActionResult<User>> GetUserByEmail(string email)
+        {
+            return await _userService.GetByEmail(email);          
+        }
 
-        //    if (user == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    return user;
-        //}
 
         //[HttpPut("{id}")]
         //public async Task<IActionResult> PutUser(Guid id, User user)
