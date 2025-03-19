@@ -1,4 +1,5 @@
 ﻿using FoodSpot.Domain;
+using FoodSpot.Domain.Models.Users;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,5 +12,6 @@ namespace FoodSpot.DTOs.Response.Users
     {
         public string Name { get; set; }
         public string Email { get; set; }
+        public UserType UserType { get; set; }
     }
 }
