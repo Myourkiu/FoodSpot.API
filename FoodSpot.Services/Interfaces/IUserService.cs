@@ -13,6 +13,7 @@ namespace FoodSpot.Services.Interfaces
     {
         Task<CreateUserResponse> CreateUser(CreateUserRequest request);
         Task<UserLoginResponse> Login(UserLoginRequest request);
+        Task<User> GetById(Guid id);
         Task<User> GetByEmail(string email);
     }
 }

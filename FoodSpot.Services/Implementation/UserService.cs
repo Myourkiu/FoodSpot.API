@@ -61,6 +61,15 @@ namespace FoodSpot.Services.Implementation
             return selectedUser;
         }
 
+        public async Task<User> GetById(Guid id)
+        {
+            User? selectedUser = await _userRepository.GetUserById(id);
+            if (selectedUser == null)
+                throw new Exception("User not found");
+
+            return selectedUser;
+        }
+
         public async Task<UserLoginResponse> Login(UserLoginRequest request)
         {
             User? user = await _userRepository.GetUserByEmail(request.Email);

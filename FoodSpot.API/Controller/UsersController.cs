@@ -29,6 +29,11 @@ namespace FoodSpot.API.Controller
             return await _userService.GetByEmail(email);          
         }
 
+        [HttpGet("{id}")]
+        public async Task<ActionResult<User>> GetUserByEmail(Guid id)
+        {
+            return await _userService.GetById(id);
+        }
 
         //[HttpPut("{id}")]
         //public async Task<IActionResult> PutUser(Guid id, User user)
