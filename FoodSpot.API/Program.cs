@@ -2,6 +2,7 @@ using FoodSpot.API.AutoMapper;
 using FoodSpot.API.Configurations;
 using FoodSpot.Infrastructure;
 using Microsoft.EntityFrameworkCore;
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -22,6 +23,14 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 // Add dependence injections
 builder.Services.AddRepositoryConfig();
 builder.Services.AddServicesConfig();
+
+// Add enum converter
+builder.Services.AddControllers()
+    .AddJsonOptions(options =>
+    {
+        options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+
+    });
 
 var app = builder.Build();
 
