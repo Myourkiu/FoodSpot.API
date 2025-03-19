@@ -17,7 +17,7 @@ namespace FoodSpot.Services.Implementation
 {
     public class TokenService : ITokenService
     {
-        public Task<string> GenerateToken(UserLoginResponse userResponse, IConfiguration configuration)
+        public async Task<string> GenerateToken(UserLoginResponse userResponse, IConfiguration configuration)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes(configuration["Jwt:Key"] ?? throw new InvalidOperationException("Jwt:Key is not configured."));
@@ -28,6 +28,8 @@ namespace FoodSpot.Services.Implementation
             {
                 Id = userResponse.Id,
                 Email = userResponse.Email,
+                Name = userResponse.Name,
+
             });
 
             var tokenDescriptor = new SecurityTokenDescriptor
@@ -46,14 +48,14 @@ namespace FoodSpot.Services.Implementation
             };
             
             var token = tokenHandler.CreateToken(tokenDescriptor);
-            return Task.FromResult(tokenHandler.WriteToken(token));
+            return await Task.FromResult(tokenHandler.WriteToken(token));
 
         }
 
-        public Task<User> GetTokenUserData(HttpContext context)
+        public async Task<User> GetTokenUserData(HttpContext context)
         {
             var userData = context.User.FindFirst(ClaimTypes.UserData);
-            return Task.FromResult((userData is not null ? JsonConvert.DeserializeObject<User>(userData.Value)! : null));
+            return await Task.FromResult((userData is not null ? JsonConvert.DeserializeObject<User>(userData.Value)! : null));
         }
     }
 }

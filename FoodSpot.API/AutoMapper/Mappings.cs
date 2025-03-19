@@ -11,9 +11,9 @@ namespace FoodSpot.API.AutoMapper
         public Mappings()
         {
          #region User
-
             CreateMap<CreateUserRequest, User>();
             CreateMap<User, CreateUserResponse>().ReverseMap();
+            CreateMap<User, UserLoginResponse>().ReverseMap();
          #endregion
         }
     }

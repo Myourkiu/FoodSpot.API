@@ -12,5 +12,6 @@ namespace FoodSpot.Services.Interfaces
     public interface IUserService
     {
         Task<CreateUserResponse> CreateUser(CreateUserRequest request);
+        Task<UserLoginResponse> Login(UserLoginRequest request);
     }
 }

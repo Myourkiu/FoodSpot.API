@@ -71,6 +71,12 @@ namespace FoodSpot.API.Controller
            return await _userService.CreateUser(request);
         }
 
+        [HttpPost("Login")]
+        public async Task<ActionResult<UserLoginResponse>> Login(UserLoginRequest request) 
+        {
+            return await _userService.Login(request);
+        }
+
 
         //[HttpDelete("{id}")]
         //public async Task<IActionResult> DeleteUser(Guid id)
