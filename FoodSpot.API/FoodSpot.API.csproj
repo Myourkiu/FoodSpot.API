@@ -17,11 +17,15 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="8.0.7" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\FoodSpot.Domain\FoodSpot.Domain.csproj" />
+    <ProjectReference Include="..\FoodSpot.DTOs\FoodSpot.DTOs.csproj" />
     <ProjectReference Include="..\FoodSpot.Infrastructure\FoodSpot.Infrastructure.csproj" />
+    <ProjectReference Include="..\FoodSpot.Services\FoodSpot.Services.csproj" />
   </ItemGroup>
 
 </Project>

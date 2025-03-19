@@ -11,8 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Request\" />
-    <Folder Include="Response\" />
+    <ProjectReference Include="..\FoodSpot.Domain\FoodSpot.Domain.csproj" />
   </ItemGroup>
 
 </Project>
