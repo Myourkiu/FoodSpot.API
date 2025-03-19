@@ -35,34 +35,11 @@ namespace FoodSpot.API.Controller
             return await _userService.GetById(id);
         }
 
-        //[HttpPut("{id}")]
-        //public async Task<IActionResult> PutUser(Guid id, User user)
-        //{
-        //    if (id != user.Id)
-        //    {
-        //        return BadRequest();
-        //    }
-
-        //    _context.Entry(user).State = EntityState.Modified;
-
-        //    try
-        //    {
-        //        await _context.SaveChangesAsync();
-        //    }
-        //    catch (DbUpdateConcurrencyException)
-        //    {
-        //        if (!UserExists(id))
-        //        {
-        //            return NotFound();
-        //        }
-        //        else
-        //        {
-        //            throw;
-        //        }
-        //    }
-
-        //    return NoContent();
-        //}
+        [HttpPut("{id}")]
+        public async Task<ActionResult<User>> PutUser(Guid id, EditUserRequest request)
+        {
+            return await _userService.EditUser(id, request);
+        }
 
         [HttpPost]
         public async Task<ActionResult<CreateUserResponse>> PostUser(CreateUserRequest request)

@@ -52,6 +52,18 @@ namespace FoodSpot.Services.Implementation
             return _mapper.Map<CreateUserResponse>(mappedUser);
         }
 
+        public async Task<User> EditUser(Guid id, EditUserRequest request)
+        {
+            User userToUpdate = await _userRepository.GetUserById(id) ?? throw new Exception("User not found");
+
+            userToUpdate.Email = string.IsNullOrEmpty(request.Email) ? userToUpdate.Email : request.Email;
+            userToUpdate.Name = string.IsNullOrEmpty(request.Name) ? userToUpdate.Name : request.Name;
+
+            userToUpdate.Update();
+
+            return await _userRepository.EditUser(userToUpdate);
+        }
+
         public async Task<User> GetByEmail(string email)
         {
             User? selectedUser = await _userRepository.GetUserByEmail(email);

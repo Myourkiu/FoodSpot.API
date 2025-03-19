@@ -37,6 +37,25 @@ namespace FoodSpot.Infrastructure.Repositories.Implementation.Users
             }
         }
 
+        public async Task<User> EditUser(User user)
+        {
+            using (var transaction = await _context.Database.BeginTransactionAsync())
+            {
+                try
+                {
+                    _context.Users.Update(user);
+                    await _context.SaveChangesAsync();
+                    await transaction.CommitAsync();
+                    return user;
+                }
+                catch (Exception)
+                {
+                    await transaction.RollbackAsync();
+                    throw;
+                }
+            }
+        }
+
         public async Task<User?> GetUserByEmail(string email)
         {
             using (var transaction = await _context.Database.BeginTransactionAsync())
