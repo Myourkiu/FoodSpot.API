@@ -23,50 +23,26 @@ namespace FoodSpot.API.Controller
         //    return await _context.Users.ToListAsync();
         //}
 
-        //[HttpGet("{id}")]
-        //public async Task<ActionResult<User>> GetUser(Guid id)
-        //{
-        //    var user = await _context.Users.FindAsync(id);
+        [HttpGet("GetByEmail")]
+        public async Task<ActionResult<UserWithoutPasswordResponse>> GetUserByEmail(string email)
+        {
+            return await _userService.GetByEmail(email);          
+        }
 
-        //    if (user == null)
-        //    {
-        //        return NotFound();
-        //    }
+        [HttpGet("{id}")]
+        public async Task<ActionResult<UserWithoutPasswordResponse>> GetUserByEmail(Guid id)
+        {
+            return await _userService.GetById(id);
+        }
 
-        //    return user;
-        //}
-
-        //[HttpPut("{id}")]
-        //public async Task<IActionResult> PutUser(Guid id, User user)
-        //{
-        //    if (id != user.Id)
-        //    {
-        //        return BadRequest();
-        //    }
-
-        //    _context.Entry(user).State = EntityState.Modified;
-
-        //    try
-        //    {
-        //        await _context.SaveChangesAsync();
-        //    }
-        //    catch (DbUpdateConcurrencyException)
-        //    {
-        //        if (!UserExists(id))
-        //        {
-        //            return NotFound();
-        //        }
-        //        else
-        //        {
-        //            throw;
-        //        }
-        //    }
-
-        //    return NoContent();
-        //}
+        [HttpPut("{id}")]
+        public async Task<ActionResult<UserWithoutPasswordResponse>> PutUser(Guid id, EditUserRequest request)
+        {
+            return await _userService.EditUser(id, request);
+        }
 
         [HttpPost]
-        public async Task<ActionResult<CreateUserResponse>> PostUser(CreateUserRequest request)
+        public async Task<ActionResult<UserWithoutPasswordResponse>> PostUser(CreateUserRequest request)
         {
            return await _userService.CreateUser(request);
         }

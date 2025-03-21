@@ -12,6 +12,7 @@ namespace FoodSpot.Infrastructure.Repositories.Interfaces.Users
         Task<User> CreateUser(User user);
         Task<User?> GetUserByEmail(string email);
         Task<User?> GetUserById (Guid id);
+        Task<User> EditUser(User user);
         Task<bool> VerifyUserExists (string email);
     }
 }

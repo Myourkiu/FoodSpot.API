@@ -14,7 +14,7 @@ namespace FoodSpot.Domain
 
         public void Update()
         {
-            UpdatedAt = DateTime.Now;
+            UpdatedAt = DateTime.UtcNow;
         }
     }
 }

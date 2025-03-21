@@ -33,7 +33,7 @@ namespace FoodSpot.Services.Implementation
             _configuration = configuration;
         }
 
-        public async Task<CreateUserResponse> CreateUser(CreateUserRequest request)
+        public async Task<UserWithoutPasswordResponse> CreateUser(CreateUserRequest request)
         {
             bool userExist = await VerifyUserExistsByEmail(request.Email);
 
@@ -49,7 +49,42 @@ namespace FoodSpot.Services.Implementation
 
             mappedUser = await _userRepository.CreateUser(mappedUser);
 
-            return _mapper.Map<CreateUserResponse>(mappedUser);
+            return _mapper.Map<UserWithoutPasswordResponse>(mappedUser);
+        }
+
+        public async Task<UserWithoutPasswordResponse> EditUser(Guid id, EditUserRequest request)
+        {
+            User userToUpdate = await _userRepository.GetUserById(id) ?? throw new Exception("User not found");
+
+            userToUpdate.Email = string.IsNullOrEmpty(request.Email) ? userToUpdate.Email : request.Email;
+            userToUpdate.Name = string.IsNullOrEmpty(request.Name) ? userToUpdate.Name : request.Name;
+
+            userToUpdate.Update();
+
+            User updatedUser = await _userRepository.EditUser(userToUpdate);
+            _mapper.Map<UserWithoutPasswordResponse>(updatedUser);
+
+            return _mapper.Map<UserWithoutPasswordResponse>(updatedUser);
+        }
+
+        public async Task<UserWithoutPasswordResponse> GetByEmail(string email)
+        {
+            User? selectedUser = await _userRepository.GetUserByEmail(email);
+            if (selectedUser == null)
+                throw new Exception("User not found");
+
+            _mapper.Map<UserWithoutPasswordResponse>(selectedUser);
+
+            return _mapper.Map<UserWithoutPasswordResponse>(selectedUser);
+        }
+
+        public async Task<UserWithoutPasswordResponse> GetById(Guid id)
+        {
+            User? selectedUser = await _userRepository.GetUserById(id);
+            if (selectedUser == null)
+                throw new Exception("User not found");
+
+            return _mapper.Map<UserWithoutPasswordResponse>(selectedUser);
         }
 
         public async Task<UserLoginResponse> Login(UserLoginRequest request)
@@ -68,6 +103,7 @@ namespace FoodSpot.Services.Implementation
             return response;
 
         }
+
 
         #region Auxiliaries
         private async Task<bool> VerifyUserExistsByEmail (string email)
