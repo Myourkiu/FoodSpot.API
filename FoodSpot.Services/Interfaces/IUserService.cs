@@ -11,10 +11,10 @@ namespace FoodSpot.Services.Interfaces
 {
     public interface IUserService
     {
-        Task<CreateUserResponse> CreateUser(CreateUserRequest request);
+        Task<UserWithoutPasswordResponse> CreateUser(CreateUserRequest request);
         Task<UserLoginResponse> Login(UserLoginRequest request);
-        Task<User> GetById(Guid id);
-        Task<User> GetByEmail(string email);
-        Task<User> EditUser(Guid id, EditUserRequest request);
+        Task<UserWithoutPasswordResponse> GetById(Guid id);
+        Task<UserWithoutPasswordResponse> GetByEmail(string email);
+        Task<UserWithoutPasswordResponse> EditUser(Guid id, EditUserRequest request);
     }
 }

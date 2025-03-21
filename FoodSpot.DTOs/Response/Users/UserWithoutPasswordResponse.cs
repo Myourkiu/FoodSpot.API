@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace FoodSpot.DTOs.Response.Users
 {
-    public class CreateUserResponse : EntityBase
+    public class UserWithoutPasswordResponse : EntityBase
     {
         public string Name { get; set; }
         public string Email { get; set; }

@@ -13,7 +13,7 @@ namespace FoodSpot.API.AutoMapper
          #region User
 
             CreateMap<CreateUserRequest, User>();
-            CreateMap<User, CreateUserResponse>().ReverseMap();
+            CreateMap<User, UserWithoutPasswordResponse>().ReverseMap();
             CreateMap<User, UserLoginResponse>().ReverseMap();
             CreateMap<EditUserRequest, User>();
 

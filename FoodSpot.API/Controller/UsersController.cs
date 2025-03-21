@@ -24,25 +24,25 @@ namespace FoodSpot.API.Controller
         //}
 
         [HttpGet("GetByEmail")]
-        public async Task<ActionResult<User>> GetUserByEmail(string email)
+        public async Task<ActionResult<UserWithoutPasswordResponse>> GetUserByEmail(string email)
         {
             return await _userService.GetByEmail(email);          
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<User>> GetUserByEmail(Guid id)
+        public async Task<ActionResult<UserWithoutPasswordResponse>> GetUserByEmail(Guid id)
         {
             return await _userService.GetById(id);
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult<User>> PutUser(Guid id, EditUserRequest request)
+        public async Task<ActionResult<UserWithoutPasswordResponse>> PutUser(Guid id, EditUserRequest request)
         {
             return await _userService.EditUser(id, request);
         }
 
         [HttpPost]
-        public async Task<ActionResult<CreateUserResponse>> PostUser(CreateUserRequest request)
+        public async Task<ActionResult<UserWithoutPasswordResponse>> PostUser(CreateUserRequest request)
         {
            return await _userService.CreateUser(request);
         }

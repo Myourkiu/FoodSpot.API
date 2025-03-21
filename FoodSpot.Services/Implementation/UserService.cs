@@ -33,7 +33,7 @@ namespace FoodSpot.Services.Implementation
             _configuration = configuration;
         }
 
-        public async Task<CreateUserResponse> CreateUser(CreateUserRequest request)
+        public async Task<UserWithoutPasswordResponse> CreateUser(CreateUserRequest request)
         {
             bool userExist = await VerifyUserExistsByEmail(request.Email);
 
@@ -49,10 +49,10 @@ namespace FoodSpot.Services.Implementation
 
             mappedUser = await _userRepository.CreateUser(mappedUser);
 
-            return _mapper.Map<CreateUserResponse>(mappedUser);
+            return _mapper.Map<UserWithoutPasswordResponse>(mappedUser);
         }
 
-        public async Task<User> EditUser(Guid id, EditUserRequest request)
+        public async Task<UserWithoutPasswordResponse> EditUser(Guid id, EditUserRequest request)
         {
             User userToUpdate = await _userRepository.GetUserById(id) ?? throw new Exception("User not found");
 
@@ -61,25 +61,30 @@ namespace FoodSpot.Services.Implementation
 
             userToUpdate.Update();
 
-            return await _userRepository.EditUser(userToUpdate);
+            User updatedUser = await _userRepository.EditUser(userToUpdate);
+            _mapper.Map<UserWithoutPasswordResponse>(updatedUser);
+
+            return _mapper.Map<UserWithoutPasswordResponse>(updatedUser);
         }
 
-        public async Task<User> GetByEmail(string email)
+        public async Task<UserWithoutPasswordResponse> GetByEmail(string email)
         {
             User? selectedUser = await _userRepository.GetUserByEmail(email);
             if (selectedUser == null)
                 throw new Exception("User not found");
 
-            return selectedUser;
+            _mapper.Map<UserWithoutPasswordResponse>(selectedUser);
+
+            return _mapper.Map<UserWithoutPasswordResponse>(selectedUser);
         }
 
-        public async Task<User> GetById(Guid id)
+        public async Task<UserWithoutPasswordResponse> GetById(Guid id)
         {
             User? selectedUser = await _userRepository.GetUserById(id);
             if (selectedUser == null)
                 throw new Exception("User not found");
 
-            return selectedUser;
+            return _mapper.Map<UserWithoutPasswordResponse>(selectedUser);
         }
 
         public async Task<UserLoginResponse> Login(UserLoginRequest request)
