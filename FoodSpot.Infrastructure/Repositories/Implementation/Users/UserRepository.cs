@@ -68,6 +68,7 @@ namespace FoodSpot.Infrastructure.Repositories.Implementation.Users
                 }
                 catch (Exception)
                 {
+                    await transaction.RollbackAsync();
                     throw;
                 }
             }
@@ -85,6 +86,7 @@ namespace FoodSpot.Infrastructure.Repositories.Implementation.Users
                 }
                 catch (Exception)
                 {
+                    await transaction.RollbackAsync();
                     throw;
                 }
             }
