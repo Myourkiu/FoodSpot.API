@@ -1,5 +1,8 @@
-﻿using FoodSpot.Services.Implementation;
+﻿using FoodSpot.Services.Implementation.Addresses;
+using FoodSpot.Services.Implementation.Token;
+using FoodSpot.Services.Implementation.Users;
 using FoodSpot.Services.Interfaces;
+using FoodSpot.Services.Interfaces.Addresses;
 
 namespace FoodSpot.API.Configurations
 {
@@ -9,6 +12,8 @@ namespace FoodSpot.API.Configurations
         {
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<ITokenService, TokenService>();
+            services.AddScoped<ICityService, CityService>();
+            services.AddScoped<IStateService, StateService>();
             return services;
         }
     }

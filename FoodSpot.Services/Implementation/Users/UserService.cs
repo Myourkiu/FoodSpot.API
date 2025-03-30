@@ -13,7 +13,7 @@ using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FoodSpot.Services.Implementation
+namespace FoodSpot.Services.Implementation.Users
 {
     public class UserService : IUserService
     {
@@ -106,9 +106,9 @@ namespace FoodSpot.Services.Implementation
 
 
         #region Auxiliaries
-        private async Task<bool> VerifyUserExistsByEmail (string email)
+        private async Task<bool> VerifyUserExistsByEmail(string email)
         {
-           bool verify = await _userRepository.VerifyUserExists(email);
+            bool verify = await _userRepository.VerifyUserExists(email);
             return verify;
         }
         #endregion
