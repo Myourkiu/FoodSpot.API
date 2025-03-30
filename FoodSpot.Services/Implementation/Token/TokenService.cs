@@ -13,7 +13,7 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FoodSpot.Services.Implementation
+namespace FoodSpot.Services.Implementation.Token
 {
     public class TokenService : ITokenService
     {
@@ -26,9 +26,9 @@ namespace FoodSpot.Services.Implementation
 
             var userData = JsonConvert.SerializeObject(new
             {
-                Id = userResponse.Id,
-                Email = userResponse.Email,
-                Name = userResponse.Name,
+                userResponse.Id,
+                userResponse.Email,
+                userResponse.Name,
 
             });
 
@@ -46,7 +46,7 @@ namespace FoodSpot.Services.Implementation
 
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
             };
-            
+
             var token = tokenHandler.CreateToken(tokenDescriptor);
             return await Task.FromResult(tokenHandler.WriteToken(token));
 
@@ -55,7 +55,7 @@ namespace FoodSpot.Services.Implementation
         public async Task<User> GetTokenUserData(HttpContext context)
         {
             var userData = context.User.FindFirst(ClaimTypes.UserData);
-            return await Task.FromResult((userData is not null ? JsonConvert.DeserializeObject<User>(userData.Value)! : null));
+            return await Task.FromResult(userData is not null ? JsonConvert.DeserializeObject<User>(userData.Value)! : null);
         }
     }
 }
