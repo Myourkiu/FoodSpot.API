@@ -22,18 +22,18 @@ namespace FoodSpot.Domain.Models.Addresses
         public int Number { get; set; }
 
         [Required]
-        [ForeignKey("State")]
         public int StateId { get; set; }
+        [ForeignKey("StateId")]
         public State State { get; set; }
 
         [Required]
-        [ForeignKey("City")]
         public int CityId { get; set; }
+        [ForeignKey("CityId")]
         public City City { get; set; }
 
         [Required]
-        [ForeignKey("User")]
         public Guid UserId { get; set; }
+        [ForeignKey("UserId")]
         public User User { get; set; }
     }
 }

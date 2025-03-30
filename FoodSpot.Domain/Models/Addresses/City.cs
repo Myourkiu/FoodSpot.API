@@ -13,8 +13,8 @@ namespace FoodSpot.Domain.Models.Addresses
         public int Id { get; set; }
         public string Name { get; set; }
         [Required]
-        [ForeignKey("State")]
         public int StateId { get; set; }
+        [ForeignKey("StateId")]
         public State State { get; set; }
     }
 }
