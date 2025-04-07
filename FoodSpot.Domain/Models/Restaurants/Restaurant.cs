@@ -27,6 +27,6 @@ namespace FoodSpot.Domain.Models.Restaurants
         [ForeignKey("AddressId")]
         public Address Address { get; set; }
 
-        public ICollection<MenuItem> MenuItems { get; set; }
+        public ICollection<MenuItem>? MenuItems { get; set; }
     }
 }

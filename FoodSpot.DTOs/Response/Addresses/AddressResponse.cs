@@ -8,17 +8,20 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FoodSpot.DTOs.Request.Addresses
+namespace FoodSpot.DTOs.Response.Addresses
 {
-    public class CreateAddressRequest
+    public class AddressResponse
     {
+        [Required]
         public string CEP { get; set; }
+        [Required]
         public string Street { get; set; }
         public string? Complement { get; set; }
+        [Required]
         public string Neighborhood { get; set; }
+        [Required]
         public int Number { get; set; }
-
-        public long StateId { get; set; }
-        public long CityId { get; set; }
+        public City City { get; set; }
+        public Guid UserId { get; set; }
     }
 }
