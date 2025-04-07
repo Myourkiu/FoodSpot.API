@@ -1,6 +1,8 @@
 ﻿using FoodSpot.Infrastructure.Repositories.Implementation.Addesses;
+using FoodSpot.Infrastructure.Repositories.Implementation.Restaurants;
 using FoodSpot.Infrastructure.Repositories.Implementation.Users;
 using FoodSpot.Infrastructure.Repositories.Interfaces.Addresses;
+using FoodSpot.Infrastructure.Repositories.Interfaces.Restaurants;
 using FoodSpot.Infrastructure.Repositories.Interfaces.Users;
 
 namespace FoodSpot.API.Configurations
@@ -12,6 +14,8 @@ namespace FoodSpot.API.Configurations
             repositories.AddScoped<IUserRepository, UserRepository>();
             repositories.AddScoped<IStateRepository, StateRepository>();
             repositories.AddScoped<ICityRepository, CityRepository>();
+            repositories.AddScoped<IAddressRepository, AddressRepository>();
+            repositories.AddScoped<IRestaurantRepository, RestaurantRepository>();
 
             return repositories;
         }

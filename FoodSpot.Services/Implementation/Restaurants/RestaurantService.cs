@@ -1,0 +1,113 @@
+﻿using AutoMapper;
+using FoodSpot.Domain.Models.Addresses;
+using FoodSpot.Domain.Models.Restaurants;
+using FoodSpot.Domain.Models.Users;
+using FoodSpot.DTOs.Request.Addresses;
+using FoodSpot.DTOs.Request.Restaurants;
+using FoodSpot.DTOs.Request.Users;
+using FoodSpot.DTOs.Response.Addresses;
+using FoodSpot.DTOs.Response.Restaurants;
+using FoodSpot.DTOs.Response.Users;
+using FoodSpot.Infrastructure.Repositories.Interfaces.Addresses;
+using FoodSpot.Infrastructure.Repositories.Interfaces.Restaurants;
+using FoodSpot.Infrastructure.Repositories.Interfaces.Users;
+using FoodSpot.Services.Interfaces;
+using FoodSpot.Services.Interfaces.Restaurants;
+using Microsoft.Extensions.Configuration;
+using Org.BouncyCastle.Asn1.Ocsp;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace FoodSpot.Services.Implementation.Restaurants
+{
+    public class RestaurantService : IRestaurantService
+    {
+        private readonly IMapper _mapper;
+        private readonly IUserRepository _userRepository;
+        private readonly IConfiguration _configuration;
+        private readonly IStateRepository _stateRepository;
+        private readonly ICityRepository _cityRepository;
+        private readonly IAddressRepository _addressRepository;
+        private readonly IRestaurantRepository _restaurantRepository;
+        
+        public RestaurantService(
+            IMapper mapper,
+            IUserRepository userRepository,
+            ITokenService tokenService,
+            IConfiguration configuration,
+            IStateRepository stateRepository,
+            ICityRepository cityRepository,
+            IAddressRepository addressRepository,
+            IRestaurantRepository restaurantRepository
+            )
+        {
+            _mapper = mapper;
+            _userRepository = userRepository;
+            _configuration = configuration;
+            _stateRepository = stateRepository;
+            _cityRepository = cityRepository;
+            _addressRepository = addressRepository;
+            _restaurantRepository = restaurantRepository;
+        }
+        public async Task<CreateRestaurantResponse> Create(CreateRestaurantRequest request)
+        {
+            if (await _userRepository.VerifyUserExists(request.UserRequest.Email))
+                throw new Exception("User already exists");
+
+            var user = CreateRestaurantUser(request.UserRequest);
+            user = await _userRepository.CreateUser(user);
+
+            var address = await CreateAddressWithLocationAsync(request.AddressRequest, user);
+            address = await _addressRepository.Create(address);
+
+            AddressResponse addressResponse = _mapper.Map<AddressResponse>(address);
+
+            Restaurant restaurant = new()
+            {
+                UserId = user.Id,
+                User = user,
+                Address = address,
+                AddressId = address.Id,
+                Cnpj = request.Cnpj
+            };
+
+            restaurant = await _restaurantRepository.Create(restaurant);
+
+            CreateRestaurantResponse response = _mapper.Map<CreateRestaurantResponse>(restaurant);
+
+            return response;
+        }
+
+        #region Auxiliaries
+
+        private User CreateRestaurantUser(CreateUserOnObjectRequest request)
+        {
+            var user = _mapper.Map<User>(request);
+            user.UserType = UserType.Restaurant;
+            user.Password = BCrypt.Net.BCrypt.HashPassword(user.Password);
+            return user;
+        }
+
+        private async Task<Address> CreateAddressWithLocationAsync(CreateAddressRequest request, User user)
+        {
+            var state = await _stateRepository.SelectById(request.StateId)
+                         ?? throw new Exception("Invalid state ID.");
+
+            var city = await _cityRepository.SelectById(request.CityId)
+                        ?? throw new Exception("Invalid city ID.");
+
+            var address = _mapper.Map<Address>(request);
+            address.User = user;
+            address.State = state;
+            address.City = city;
+            address.UserId = user.Id;
+
+            return address;
+        }
+
+        #endregion
+    }
+}

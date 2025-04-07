@@ -1,4 +1,5 @@
 ﻿using FoodSpot.Domain.Models.Addresses;
+using FoodSpot.Domain.Models.Restaurants;
 using FoodSpot.Domain.Models.Users;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -17,28 +18,44 @@ namespace FoodSpot.Infrastructure
         public DbSet<State> States { get; set; }
         public DbSet<City> Cities { get; set; }
         public DbSet<Address> Addresses { get; set; }
+        public DbSet<Restaurant> Restaurants { get; set; }
+        public DbSet<MenuItem> MenuItems { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            //delete cascade address
+            //delete cascade address - user
             modelBuilder.Entity<Address>()
             .HasOne(a => a.User)
             .WithMany()
             .HasForeignKey(a => a.UserId)
             .OnDelete(DeleteBehavior.Cascade);
 
-            //delete cascade state
+            //delete cascade address - state
             modelBuilder.Entity<Address>()
             .HasOne(a => a.State)
             .WithMany()
             .HasForeignKey(a => a.StateId)
             .OnDelete(DeleteBehavior.Cascade);
 
-            //delete cascade city
+            //delete cascade address - city
             modelBuilder.Entity<Address>()
             .HasOne(a => a.City)
             .WithMany()
             .HasForeignKey(a => a.CityId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+            //delete cascade restaurant - user
+            modelBuilder.Entity<Restaurant>()
+            .HasOne(a => a.User)
+            .WithMany()
+            .HasForeignKey(a => a.UserId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+            //delete cascade menuItem - restaurant
+            modelBuilder.Entity<MenuItem>()
+            .HasOne(a => a.Restaurant)
+            .WithMany(r => r.MenuItems) 
+            .HasForeignKey(a => a.RestaurantId)
             .OnDelete(DeleteBehavior.Cascade);
 
 

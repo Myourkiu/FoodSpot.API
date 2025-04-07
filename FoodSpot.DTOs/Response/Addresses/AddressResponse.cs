@@ -1,15 +1,16 @@
-﻿using FoodSpot.Domain.Models.Users;
+﻿using FoodSpot.Domain.Models.Addresses;
+using FoodSpot.Domain.Models.Users;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FoodSpot.Domain.Models.Addresses
+namespace FoodSpot.DTOs.Response.Addresses
 {
-    public class Address : EntityBase
+    public class AddressResponse
     {
         [Required]
         public string CEP { get; set; }
@@ -20,20 +21,7 @@ namespace FoodSpot.Domain.Models.Addresses
         public string Neighborhood { get; set; }
         [Required]
         public int Number { get; set; }
-
-        [Required]
-        public int StateId { get; set; }
-        [ForeignKey("StateId")]
-        public State State { get; set; }
-
-        [Required]
-        public int CityId { get; set; }
-        [ForeignKey("CityId")]
         public City City { get; set; }
-
-        [Required]
         public Guid UserId { get; set; }
-        [ForeignKey("UserId")]
-        public User User { get; set; }
     }
 }
