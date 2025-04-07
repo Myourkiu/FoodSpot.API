@@ -4,6 +4,7 @@ using FoodSpot.Domain.Models.Restaurants;
 using FoodSpot.Domain.Models.Users;
 using FoodSpot.DTOs.Request.Addresses;
 using FoodSpot.DTOs.Request.Restaurants;
+using FoodSpot.DTOs.Request.Users;
 using FoodSpot.DTOs.Response.Addresses;
 using FoodSpot.DTOs.Response.Restaurants;
 using FoodSpot.DTOs.Response.Users;
@@ -13,6 +14,7 @@ using FoodSpot.Infrastructure.Repositories.Interfaces.Users;
 using FoodSpot.Services.Interfaces;
 using FoodSpot.Services.Interfaces.Restaurants;
 using Microsoft.Extensions.Configuration;
+using Org.BouncyCastle.Asn1.Ocsp;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -52,32 +54,15 @@ namespace FoodSpot.Services.Implementation.Restaurants
         }
         public async Task<CreateRestaurantResponse> Create(CreateRestaurantRequest request)
         {
-            var verifyUserExists = await _userRepository.VerifyUserExists(request.UserRequest.Email);
-
-            if (verifyUserExists)
+            if (await _userRepository.VerifyUserExists(request.UserRequest.Email))
                 throw new Exception("User already exists");
 
-            User user = _mapper.Map<User>(request.UserRequest);
-
-            user.UserType = UserType.Restaurant;
-            user.Password = BCrypt.Net.BCrypt.HashPassword(user.Password);
-
+            var user = CreateRestaurantUser(request.UserRequest);
             user = await _userRepository.CreateUser(user);
 
-            UserWithoutPasswordResponse userResponse = _mapper.Map<UserWithoutPasswordResponse>(user);
-
-            State state = await _stateRepository.SelectById(request.AddressRequest.StateId);
-            City city = await _cityRepository.SelectById(request.AddressRequest.CityId);
-
-            Address address = _mapper.Map<Address>(request.AddressRequest);
-
-            address.City = city;
-            address.State = state;
-
-            address.UserId = user.Id;
-            address.User = user;
-
+            var address = await CreateAddressWithLocationAsync(request.AddressRequest, user);
             address = await _addressRepository.Create(address);
+
             AddressResponse addressResponse = _mapper.Map<AddressResponse>(address);
 
             Restaurant restaurant = new()
@@ -94,7 +79,35 @@ namespace FoodSpot.Services.Implementation.Restaurants
             CreateRestaurantResponse response = _mapper.Map<CreateRestaurantResponse>(restaurant);
 
             return response;
-
         }
+
+        #region Auxiliaries
+
+        private User CreateRestaurantUser(CreateUserOnObjectRequest request)
+        {
+            var user = _mapper.Map<User>(request);
+            user.UserType = UserType.Restaurant;
+            user.Password = BCrypt.Net.BCrypt.HashPassword(user.Password);
+            return user;
+        }
+
+        private async Task<Address> CreateAddressWithLocationAsync(CreateAddressRequest request, User user)
+        {
+            var state = await _stateRepository.SelectById(request.StateId)
+                         ?? throw new Exception("Invalid state ID.");
+
+            var city = await _cityRepository.SelectById(request.CityId)
+                        ?? throw new Exception("Invalid city ID.");
+
+            var address = _mapper.Map<Address>(request);
+            address.User = user;
+            address.State = state;
+            address.City = city;
+            address.UserId = user.Id;
+
+            return address;
+        }
+
+        #endregion
     }
 }
