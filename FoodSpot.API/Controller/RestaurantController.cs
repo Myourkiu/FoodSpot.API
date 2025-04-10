@@ -21,5 +21,10 @@ namespace FoodSpot.API.Controller
             
             return await _restaurantService.Create(request);
         }
+        [HttpGet]
+        public async Task<RestaurantResponse> GetById(Guid id)
+        {
+            return await _restaurantService.GetById(id);
+        }
     }
 }

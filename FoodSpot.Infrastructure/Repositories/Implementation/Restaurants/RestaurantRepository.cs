@@ -1,6 +1,7 @@
 ﻿using FoodSpot.Domain.Models.Restaurants;
 using FoodSpot.Domain.Models.Users;
 using FoodSpot.Infrastructure.Repositories.Interfaces.Restaurants;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -32,6 +33,22 @@ namespace FoodSpot.Infrastructure.Repositories.Implementation.Restaurants
                 catch (Exception)
                 {
                     await transaction.RollbackAsync();
+                    throw;
+                }
+            }
+        }
+
+        public async Task<Restaurant> GetById(Guid id)
+        {
+            using (var transaction = await _context.Database.BeginTransactionAsync())
+            {
+                try
+                {
+                    Restaurant? restaurant = await _context.Restaurants.FirstOrDefaultAsync(r => r.Id == id);
+                    return restaurant;
+                }
+                catch (Exception)
+                {
                     throw;
                 }
             }

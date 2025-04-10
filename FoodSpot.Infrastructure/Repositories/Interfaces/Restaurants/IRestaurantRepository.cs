@@ -10,5 +10,6 @@ namespace FoodSpot.Infrastructure.Repositories.Interfaces.Restaurants
     public interface IRestaurantRepository
     {
         Task<Restaurant> Create(Restaurant restaurant);
+        Task<Restaurant> GetById(Guid id);
     }
 }

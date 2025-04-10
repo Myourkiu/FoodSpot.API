@@ -81,7 +81,41 @@ namespace FoodSpot.Services.Implementation.Restaurants
             return response;
         }
 
+        public async Task<RestaurantResponse> GetById(Guid id)
+        {
+            Restaurant restaurant = await _restaurantRepository.GetById(id);
+
+            if (restaurant == null)
+                throw new Exception("Restaurant not found");
+
+            return new()
+            {
+                Address = _mapper.Map<AddressResponse>(await GetAddressById(restaurant.AddressId)),
+                Cnpj = restaurant.Cnpj,
+                CreatedAt = restaurant.CreatedAt,
+                User = _mapper.Map<UserWithoutPasswordResponse>(await GetUserById(restaurant.UserId)),
+                Id = restaurant.Id,
+                MenuItems = restaurant.MenuItems,
+            };
+        }
+
         #region Auxiliaries
+
+        private async Task<User> GetUserById(Guid userId)
+        {
+            User? user = await _userRepository.GetUserById(userId);
+            if (user == null)
+                throw new Exception("User not found");
+            return user;
+        }
+
+        private async Task<Address> GetAddressById(Guid addressId)
+        {
+            Address? address = await _addressRepository.GetById(addressId);
+            if (address == null)
+                throw new Exception("User not found");
+            return address;
+        }
 
         private User CreateRestaurantUser(CreateUserOnObjectRequest request)
         {
@@ -107,6 +141,7 @@ namespace FoodSpot.Services.Implementation.Restaurants
 
             return address;
         }
+
 
         #endregion
     }
