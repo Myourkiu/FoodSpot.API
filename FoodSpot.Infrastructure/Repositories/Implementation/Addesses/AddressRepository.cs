@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -32,6 +33,22 @@ namespace FoodSpot.Infrastructure.Repositories.Implementation.Addesses
                 catch (Exception)
                 {
                     await transaction.RollbackAsync();
+                    throw;
+                }
+            }
+        }
+
+        public async Task<Address> GetById(Guid id)
+        {
+            using (var transaction = await _context.Database.BeginTransactionAsync())
+            {
+                try
+                {
+                    Address address = await _context.Addresses.FirstOrDefaultAsync(a => a.Id == id);
+                    return address;
+                }
+                catch (Exception)
+                {
                     throw;
                 }
             }
