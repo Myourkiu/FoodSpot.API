@@ -37,7 +37,6 @@ namespace FoodSpot.Services.Implementation.Restaurants
         public RestaurantService(
             IMapper mapper,
             IUserRepository userRepository,
-            ITokenService tokenService,
             IConfiguration configuration,
             IStateRepository stateRepository,
             ICityRepository cityRepository,
