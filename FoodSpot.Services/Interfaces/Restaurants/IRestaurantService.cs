@@ -13,5 +13,6 @@ namespace FoodSpot.Services.Interfaces.Restaurants
     public interface IRestaurantService
     {
         Task<CreateRestaurantResponse> Create(CreateRestaurantRequest request);
+        Task<RestaurantResponse> GetById(Guid id);
     }
 }

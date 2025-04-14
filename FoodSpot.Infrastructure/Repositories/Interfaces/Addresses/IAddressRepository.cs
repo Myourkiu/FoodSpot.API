@@ -10,5 +10,6 @@ namespace FoodSpot.Infrastructure.Repositories.Interfaces.Addresses
     public interface IAddressRepository
     {
         Task<Address> Create(Address address);
+        Task<Address> GetById(Guid id);
     }
 }

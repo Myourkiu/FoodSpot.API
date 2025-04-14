@@ -6,6 +6,7 @@ using FoodSpot.DTOs.Request.Addresses;
 using FoodSpot.DTOs.Request.Restaurants;
 using FoodSpot.DTOs.Request.Users;
 using FoodSpot.DTOs.Response.Addresses;
+using FoodSpot.DTOs.Response.Addresses.Cities;
 using FoodSpot.DTOs.Response.Restaurants;
 using FoodSpot.DTOs.Response.Users;
 using FoodSpot.Infrastructure.Repositories.Interfaces.Addresses;
@@ -36,7 +37,6 @@ namespace FoodSpot.Services.Implementation.Restaurants
         public RestaurantService(
             IMapper mapper,
             IUserRepository userRepository,
-            ITokenService tokenService,
             IConfiguration configuration,
             IStateRepository stateRepository,
             ICityRepository cityRepository,
@@ -81,7 +81,48 @@ namespace FoodSpot.Services.Implementation.Restaurants
             return response;
         }
 
+        public async Task<RestaurantResponse> GetById(Guid id)
+        {
+            Restaurant restaurant = await _restaurantRepository.GetById(id);
+
+            if (restaurant == null)
+                throw new Exception("Restaurant not found");
+
+            return new()
+            {
+                Address = _mapper.Map<AddressResponse>(await GetAddressById(restaurant.AddressId)),
+                Cnpj = restaurant.Cnpj,
+                CreatedAt = restaurant.CreatedAt,
+                User = _mapper.Map<UserWithoutPasswordResponse>(await GetUserById(restaurant.UserId)), //missing city response
+                Id = restaurant.Id,
+                MenuItems = restaurant.MenuItems,
+            };
+        }
+
         #region Auxiliaries
+
+        private async Task<User> GetUserById(Guid userId)
+        {
+            User? user = await _userRepository.GetUserById(userId);
+            if (user == null)
+                throw new Exception("User not found");
+            return user;
+        }
+
+        private async Task<AddressResponse> GetAddressById(Guid addressId)
+        {
+            Address? address = await _addressRepository.GetById(addressId);
+            if (address == null)
+                throw new Exception("User not found");
+
+            AddressResponse response = _mapper.Map<AddressResponse>(address);
+            City city = await _cityRepository.SelectById(address.CityId);
+            State state = await _stateRepository.SelectById(address.StateId);
+
+            response.City = city;
+            response.City.State = state;
+            return response;
+        }
 
         private User CreateRestaurantUser(CreateUserOnObjectRequest request)
         {
@@ -107,6 +148,7 @@ namespace FoodSpot.Services.Implementation.Restaurants
 
             return address;
         }
+
 
         #endregion
     }
