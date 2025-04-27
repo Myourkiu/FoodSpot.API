@@ -13,9 +13,9 @@ namespace FoodSpot.Domain.Models.Restaurants
         public string Name { get; set; }
         public decimal Price { get; set; }
         public string Description { get; set; }
+        public bool isAvailable { get; set; }
         [Required]
         public Guid RestaurantId { get; set; }
-
 
         [ForeignKey("RestaurantId")]
         public Restaurant Restaurant { get; set; }
