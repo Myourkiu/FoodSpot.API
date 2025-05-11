@@ -7,6 +7,7 @@ using FoodSpot.DTOs.Request.Restaurants;
 using FoodSpot.DTOs.Request.Users;
 using FoodSpot.DTOs.Response.Addresses;
 using FoodSpot.DTOs.Response.Addresses.Cities;
+using FoodSpot.DTOs.Response.MenuItems;
 using FoodSpot.DTOs.Response.Restaurants;
 using FoodSpot.DTOs.Response.Users;
 using FoodSpot.Infrastructure.Repositories.Interfaces.Addresses;
@@ -88,14 +89,20 @@ namespace FoodSpot.Services.Implementation.Restaurants
             if (restaurant == null)
                 throw new Exception("Restaurant not found");
 
+            ICollection<MenuItemResponse> menuItemResponses = [];
+            if(restaurant.MenuItems.ToArray().Length > 0){
+                foreach(var item in restaurant.MenuItems)
+                    menuItemResponses.Add(_mapper.Map<MenuItemResponse>(item));
+            }
+
             return new()
             {
                 Address = _mapper.Map<AddressResponse>(await GetAddressById(restaurant.AddressId)),
                 Cnpj = restaurant.Cnpj,
                 CreatedAt = restaurant.CreatedAt,
-                User = _mapper.Map<UserWithoutPasswordResponse>(await GetUserById(restaurant.UserId)), //missing city response
+                User = _mapper.Map<UserWithoutPasswordResponse>(await GetUserById(restaurant.UserId)),
                 Id = restaurant.Id,
-                MenuItems = restaurant.MenuItems,
+                MenuItems = menuItemResponses,
             };
         }
 
