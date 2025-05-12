@@ -7,14 +7,17 @@ using FoodSpot.DTOs.Request.Restaurants;
 using FoodSpot.DTOs.Request.Users;
 using FoodSpot.DTOs.Response.Addresses;
 using FoodSpot.DTOs.Response.Addresses.Cities;
+using FoodSpot.DTOs.Response.MenuItems;
 using FoodSpot.DTOs.Response.Restaurants;
 using FoodSpot.DTOs.Response.Users;
 using FoodSpot.Infrastructure.Repositories.Interfaces.Addresses;
+using FoodSpot.Infrastructure.Repositories.Interfaces.MenuItems;
 using FoodSpot.Infrastructure.Repositories.Interfaces.Restaurants;
 using FoodSpot.Infrastructure.Repositories.Interfaces.Users;
 using FoodSpot.Services.Interfaces;
 using FoodSpot.Services.Interfaces.Restaurants;
 using Microsoft.Extensions.Configuration;
+using NPOI.OpenXmlFormats;
 using Org.BouncyCastle.Asn1.Ocsp;
 using System;
 using System.Collections.Generic;
@@ -33,7 +36,8 @@ namespace FoodSpot.Services.Implementation.Restaurants
         private readonly ICityRepository _cityRepository;
         private readonly IAddressRepository _addressRepository;
         private readonly IRestaurantRepository _restaurantRepository;
-        
+        private readonly IMenuItemRepository _menuItemRepository;
+
         public RestaurantService(
             IMapper mapper,
             IUserRepository userRepository,
@@ -41,7 +45,8 @@ namespace FoodSpot.Services.Implementation.Restaurants
             IStateRepository stateRepository,
             ICityRepository cityRepository,
             IAddressRepository addressRepository,
-            IRestaurantRepository restaurantRepository
+            IRestaurantRepository restaurantRepository,
+            IMenuItemRepository menuItemRepository
             )
         {
             _mapper = mapper;
@@ -51,6 +56,7 @@ namespace FoodSpot.Services.Implementation.Restaurants
             _cityRepository = cityRepository;
             _addressRepository = addressRepository;
             _restaurantRepository = restaurantRepository;
+            _menuItemRepository = menuItemRepository;
         }
         public async Task<CreateRestaurantResponse> Create(CreateRestaurantRequest request)
         {
@@ -93,9 +99,9 @@ namespace FoodSpot.Services.Implementation.Restaurants
                 Address = _mapper.Map<AddressResponse>(await GetAddressById(restaurant.AddressId)),
                 Cnpj = restaurant.Cnpj,
                 CreatedAt = restaurant.CreatedAt,
-                User = _mapper.Map<UserWithoutPasswordResponse>(await GetUserById(restaurant.UserId)), //missing city response
+                User = _mapper.Map<UserWithoutPasswordResponse>(await GetUserById(restaurant.UserId)),
                 Id = restaurant.Id,
-                MenuItems = restaurant.MenuItems,
+                MenuItems = await GetMenuItemsByRestaurantIdAsync(restaurant),
             };
         }
 
@@ -149,6 +155,20 @@ namespace FoodSpot.Services.Implementation.Restaurants
             return address;
         }
 
+        private async Task<ICollection<MenuItemResponse>> GetMenuItemsByRestaurantIdAsync(Restaurant restaurant)
+        {
+            ICollection<MenuItem> menuItems = await _menuItemRepository.GetByRestaurantId(restaurant.Id);
+            ICollection<MenuItemResponse> menuItemsResponse = [];
+            if (menuItems.Count > 0)
+            {
+                foreach (var item in menuItems)
+                {
+                    menuItemsResponse.Add(_mapper.Map<MenuItemResponse>(item));
+                }
+            }
+
+            return menuItemsResponse;
+        }
 
         #endregion
     }
