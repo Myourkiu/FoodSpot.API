@@ -10,5 +10,6 @@ namespace FoodSpot.Infrastructure.Repositories.Interfaces.MenuItems
     public interface IMenuItemRepository
     {
         Task<MenuItem> Create(MenuItem menuItem);
+        Task<ICollection<MenuItem>> GetByRestaurantId(Guid restaurantId);
     }
 }
