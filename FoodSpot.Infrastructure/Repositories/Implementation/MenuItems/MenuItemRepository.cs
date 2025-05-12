@@ -36,5 +36,23 @@ namespace FoodSpot.Infrastructure.Repositories.Implementation.MenuItems
             }
         }
 
+        public async Task<ICollection<MenuItem>> GetByRestaurantId(Guid restaurantId)
+        {
+             using (var transaction = await _context.Database.BeginTransactionAsync())
+            {
+                try 
+                {
+                    ICollection<MenuItem> items = await _context.MenuItems.Where(r => r.RestaurantId == restaurantId).ToListAsync();
+                    await transaction.CommitAsync();
+
+                    return items;
+                }
+                catch (Exception)
+                {
+                    transaction.RollbackAsync();
+                    throw;
+                }
+            }
+        }
     }
 }
