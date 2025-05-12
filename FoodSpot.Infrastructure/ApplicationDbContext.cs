@@ -1,4 +1,5 @@
 ﻿using FoodSpot.Domain.Models.Addresses;
+using FoodSpot.Domain.Models.Customers;
 using FoodSpot.Domain.Models.Restaurants;
 using FoodSpot.Domain.Models.Users;
 using Microsoft.EntityFrameworkCore;
@@ -20,6 +21,7 @@ namespace FoodSpot.Infrastructure
         public DbSet<Address> Addresses { get; set; }
         public DbSet<Restaurant> Restaurants { get; set; }
         public DbSet<MenuItem> MenuItems { get; set; }
+        public DbSet<Customer> Customers { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -54,8 +56,15 @@ namespace FoodSpot.Infrastructure
             //delete cascade menuItem - restaurant
             modelBuilder.Entity<MenuItem>()
             .HasOne(a => a.Restaurant)
-            .WithMany(r => r.MenuItems) 
+            .WithMany(r => r.MenuItems)
             .HasForeignKey(a => a.RestaurantId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+            //delete cascade customer - user
+            modelBuilder.Entity<Customer>()
+            .HasOne(a => a.User)
+            .WithMany()
+            .HasForeignKey(a => a.UserId)
             .OnDelete(DeleteBehavior.Cascade);
 
 
